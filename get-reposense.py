@@ -50,14 +50,14 @@ def clone_and_make_reposense(branch=None):
     '''
 
     if branch:
-        command += 'git checkout ' + branch
+        command += 'git checkout ' + branch + ' &&'
 
     command += \
     '''
     ./gradlew zipreport shadowjar &&
     mv build/jar/RepoSense.jar ../
     '''
-   
+    
     subprocess.check_call(command, shell=True)
 
 def download_file(url):
