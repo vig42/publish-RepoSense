@@ -1,26 +1,10 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
+/* global Vuex */
 const filesSortDict = {
   lineOfCode: (file) => file.lineCount,
   path: (file) => file.path,
   fileName: (file) => file.path.split(/[/]+/).pop(),
   fileType: (file) => file.fileType,
-};
-
-window.toggleNext = function toggleNext(ele) {
-  // function for toggling unopened code
-  const targetClass = 'active';
-
-  const parent = ele.parentNode;
-  const classes = parent.className.split(' ');
-  const idx = classes.indexOf(targetClass);
-
-  if (idx === -1) {
-    classes.push(targetClass);
-  } else {
-    classes.splice(idx, 1);
-  }
-
-  parent.className = classes.join(' ');
 };
 
 const repoCache = [];
@@ -33,32 +17,98 @@ window.vAuthorship = {
     return {
       isLoaded: false,
       files: [],
-      isSelectAllChecked: true,
+      selectedFiles: [],
+      filterType: 'checkboxes',
       selectedFileTypes: [],
       fileTypes: [],
+      filesLinesObj: {},
       fileTypeBlankLinesObj: {},
-      totalLineCount: '',
-      totalBlankLineCount: '',
       filesSortType: 'lineOfCode',
-      toReverseSortFiles: false,
-      activeFilesCount: 0,
-      filterSearch: '*',
-      sortingFunction: window.comparator(filesSortDict.lineOfCode),
-      isSearchBar: false,
-      isCheckBoxes: true,
+      toReverseSortFiles: true,
+      searchBarValue: '',
     };
   },
 
   watch: {
     filesSortType() {
-      this.sortFiles();
+      window.addHash('authorshipSortBy', this.filesSortType);
+      window.encodeHash();
+      this.updateSelectedFiles();
     },
+
+    searchBarValue() {
+      this.updateSelectedFiles();
+    },
+
+    selectedFileTypes() {
+      this.updateSelectedFiles();
+    },
+
     toReverseSortFiles() {
-      this.sortFiles();
+      window.addHash('reverseAuthorshipOrder', this.toReverseSortFiles);
+      window.encodeHash();
+      this.updateSelectedFiles();
+    },
+
+    isLoaded() {
+      if (this.isLoaded) {
+        this.retrieveHashes();
+        this.setInfoHash();
+      }
     },
   },
 
   methods: {
+    retrieveHashes() {
+      const hash = window.hashParams;
+
+      switch (hash.authorshipSortBy) {
+      case 'path':
+      case 'fileName':
+      case 'fileType':
+        this.filesSortType = hash.authorshipSortBy;
+        break;
+      default:
+        // Invalid value, use the default value of 'lineOfCode'
+      }
+
+      this.toReverseSortFiles = hash.reverseAuthorshipOrder !== 'false';
+
+      this.selectedFileTypes = this.info.checkedFileTypes
+        ? this.info.checkedFileTypes.filter((fileType) => this.fileTypes.includes(fileType))
+        : [];
+      if (hash.authorshipFileTypes) {
+        this.selectedFileTypes = hash.authorshipFileTypes
+            .split(window.HASH_DELIMITER)
+            .filter((fileType) => this.fileTypes.includes(fileType));
+      }
+
+      if ('authorshipFilesGlob' in hash) {
+        this.indicateSearchBar();
+        this.searchBarValue = hash.authorshipFilesGlob;
+      }
+    },
+
+    setInfoHash() {
+      const { addHash } = window;
+      // We only set these hashes as they are propagated from summary_charts
+      addHash('tabAuthor', this.info.author);
+      addHash('tabRepo', this.info.repo);
+      addHash('authorshipIsMergeGroup', this.info.isMergeGroup);
+      this.updateFileTypeHash();
+    },
+
+    removeAuthorshipHashes() {
+      window.removeHash('authorshipFileTypes');
+      window.removeHash('authorshipFilesGlob');
+      window.removeHash('authorshipSortBy');
+      window.removeHash('reverseAuthorshipOrder');
+      window.removeHash('tabAuthor');
+      window.removeHash('tabRepo');
+      window.removeHash('authorshipIsMergeGroup');
+      window.encodeHash();
+    },
+
     initiate() {
       const repo = window.REPOS[this.info.repo];
 
@@ -85,39 +135,62 @@ window.vAuthorship = {
 
     getRepoProps(repo) {
       if (repo) {
-        const author = repo.users.filter((user) => user.name === this.info.author);
-        if (author.length > 0) {
-          this.info.name = author[0].displayName;
-          this.filesLinesObj = author[0].fileTypeContribution;
+        if (this.info.isMergeGroup) {
+          // sum of all users' file type contribution
+          repo.users.forEach((author) => {
+            this.updateTotalFileTypeContribution(author.fileTypeContribution);
+          });
+        } else {
+          const author = repo.users.find((user) => user.name === this.info.author);
+          if (author) {
+            this.info.name = author.displayName;
+            this.filesLinesObj = author.fileTypeContribution;
+          }
         }
       }
     },
 
-    setInfoHash() {
-      const { addHash, encodeHash } = window;
-      addHash('tabAuthor', this.info.author);
-      addHash('tabRepo', this.info.repo);
-      encodeHash();
-    },
-
-    expandAll(isActive) {
-      const renameValue = isActive ? 'file active' : 'file';
-
-      const files = document.getElementsByClassName('file');
-      Array.from(files).forEach((file) => {
-        file.className = renameValue;
+    updateTotalFileTypeContribution(fileTypeContribution) {
+      Object.entries(fileTypeContribution).forEach(([type, cnt]) => {
+        if (this.filesLinesObj[type]) {
+          this.filesLinesObj[type] += cnt;
+        } else {
+          this.filesLinesObj[type] = cnt;
+        }
       });
-
-      this.activeFilesCount = isActive ? this.selectedFiles.length : 0;
     },
 
-    updateCount() {
-      this.activeFilesCount = document.getElementsByClassName('file active').length;
+    expandAll() {
+      this.selectedFiles.forEach((file) => {
+        file.active = true;
+        file.wasCodeLoaded = true;
+      });
+    },
+
+    collapseAll() {
+      this.selectedFiles.forEach((file) => {
+        file.active = false;
+      });
+    },
+
+    toggleFileActiveProperty(file) {
+      file.active = !file.active;
+      file.wasCodeLoaded = file.wasCodeLoaded || file.active;
+    },
+
+    isUnknownAuthor(name) {
+      return name === '-';
     },
 
     hasCommits(info) {
-      if (window.REPOS[info.repo]) {
-        return window.REPOS[info.repo].commits.authorFinalContributionMap[info.author] > 0;
+      const { isMergeGroup, author } = info;
+      const repo = window.REPOS[info.repo];
+      if (repo) {
+        return isMergeGroup
+            ? Object.entries(repo.commits.authorFinalContributionMap).some(([name, cnt]) => (
+              !this.isUnknownAuthor(name) && cnt > 0
+            ))
+            : repo.commits.authorFinalContributionMap[author] > 0;
       }
       return false;
     },
@@ -130,7 +203,10 @@ window.vAuthorship = {
       let blankLineCount = 0;
 
       lines.forEach((line, lineCount) => {
-        const authored = (line.author && line.author.gitId === this.info.author);
+        const isAuthorMatched = this.info.isMergeGroup
+            ? !this.isUnknownAuthor(line.author.gitId)
+            : line.author.gitId === this.info.author;
+        const authored = (line.author && isAuthorMatched);
 
         if (authored !== lastState || lastId === -1) {
           segments.push({
@@ -160,23 +236,27 @@ window.vAuthorship = {
     },
 
     processFiles(files) {
+      const COLLAPSED_VIEW_LINE_COUNT_THRESHOLD = 2000;
       const res = [];
       const fileTypeBlanksInfoObj = {};
-      let totalLineCount = 0;
-      let totalBlankLineCount = 0;
 
       files.forEach((file) => {
-        const lineCnt = file.authorContributionMap[this.info.author];
+        const contributionMap = file.authorContributionMap;
+        const lineCnt = this.info.isMergeGroup
+            ? this.getContributionFromAllAuthors(contributionMap)
+            : contributionMap[this.info.author];
+
         if (lineCnt) {
-          totalLineCount += lineCnt;
           const out = {};
           out.path = file.path;
           out.lineCount = lineCnt;
+          out.active = lineCnt <= COLLAPSED_VIEW_LINE_COUNT_THRESHOLD;
+          out.wasCodeLoaded = lineCnt <= COLLAPSED_VIEW_LINE_COUNT_THRESHOLD;
           out.fileType = file.fileType;
 
           const segmentInfo = this.splitSegments(file.lines);
           out.segments = segmentInfo.segments;
-          totalBlankLineCount += segmentInfo.blankLineCount;
+          out.blankLineCount = segmentInfo.blankLineCount;
 
           this.addBlankLineCount(file.fileType, segmentInfo.blankLineCount,
               fileTypeBlanksInfoObj);
@@ -184,13 +264,10 @@ window.vAuthorship = {
         }
       });
 
-      this.totalLineCount = totalLineCount;
-      this.totalBlankLineCount = totalBlankLineCount;
       res.sort((a, b) => b.lineCount - a.lineCount);
 
       Object.keys(this.filesLinesObj).forEach((file) => {
         if (this.filesLinesObj[file] !== 0) {
-          this.selectedFileTypes.push(file);
           this.fileTypes.push(file);
         }
       });
@@ -198,8 +275,13 @@ window.vAuthorship = {
       this.fileTypeBlankLinesObj = fileTypeBlanksInfoObj;
       this.files = res;
       this.isLoaded = true;
+      this.updateSelectedFiles();
+    },
 
-      this.activeFilesCount = this.selectedFiles.length;
+    getContributionFromAllAuthors(contributionMap) {
+      return Object.entries(contributionMap).reduce((acc, [author, cnt]) => (
+        (!this.isUnknownAuthor(author) ? acc + cnt : acc)
+      ), 0);
     },
 
     addBlankLineCount(fileType, lineCount, filesInfoObj) {
@@ -210,80 +292,51 @@ window.vAuthorship = {
       filesInfoObj[fileType] += lineCount;
     },
 
-    sortFiles() {
-      this.sortingFunction = (a, b) => (this.toReverseSortFiles ? -1 : 1)
-          * window.comparator(filesSortDict[this.filesSortType])(a, b);
+    updateSearchBarValue() {
+      this.searchBarValue = this.$refs.searchBar.value;
+
+      window.addHash('authorshipFilesGlob', this.searchBarValue);
+      window.removeHash('authorshipFileTypes');
+      window.encodeHash();
     },
 
-    selectAll() {
-      if (this.isSearchBar) {
-        this.indicateCheckBoxes();
-      }
-      if (!this.isSelectAllChecked) {
-        this.selectedFileTypes = this.fileTypes.slice();
-        this.activeFilesCount = this.files.length;
-      } else {
-        this.selectedFileTypes = [];
-        this.activeFilesCount = 0;
-      }
+    updateFileTypeHash() {
+      const fileTypeHash = this.selectedFileTypes.length > 0
+          ? this.selectedFileTypes.reduce((a, b) => `${a}~${b}`)
+          : '';
+
+      window.addHash('authorshipFileTypes', fileTypeHash);
+      window.removeHash('authorshipFilesGlob');
+      window.encodeHash();
     },
 
-    selectFileType(fileType) {
-      if (this.isSearchBar) {
-        this.indicateCheckBoxes();
-      }
-      if (this.selectedFileTypes.includes(fileType)) {
-        const index = this.selectedFileTypes.indexOf(fileType);
-        this.selectedFileTypes.splice(index, 1);
-      } else {
-        this.selectedFileTypes.push(fileType);
-      }
-    },
-
-    getSelectedFiles() {
-      if (this.fileTypes.length === this.selectedFileTypes.length) {
-        this.isSelectAllChecked = true;
-      } else {
-        this.isSelectAllChecked = false;
-      }
-
-      setTimeout(this.updateCount, 0);
-    },
-
-    updateFilterSearch(evt) {
-      if (this.isCheckBoxes) {
-        this.indicateSearchBar();
-      }
-      this.filterSearch = (evt.target.value.length !== 0) ? evt.target.value : '*';
-    },
-
-    tickAllCheckboxes() {
-      this.selectedFileTypes = this.fileTypes.slice();
-      this.isSelectAllChecked = true;
+    updateSelectedFiles() {
+      this.$store.commit('incrementLoadingOverlayCount', 1);
+      setTimeout(() => {
+        this.selectedFiles = this.files.filter(
+            (file) => this.selectedFileTypes.includes(file.fileType)
+            && minimatch(file.path, this.searchBarValue || '*', { matchBase: true, dot: true }),
+        )
+            .sort(this.sortingFunction);
+        this.$store.commit('incrementLoadingOverlayCount', -1);
+      });
     },
 
     indicateSearchBar() {
-      this.isSearchBar = true;
-      this.isCheckBoxes = false;
-      this.tickAllCheckboxes();
+      this.selectedFileTypes = this.fileTypes.slice();
+      this.filterType = 'search';
     },
 
     indicateCheckBoxes() {
-      const searchBar = document.getElementById('search');
-      searchBar.value = '';
-      this.filterSearch = '*';
-      this.isSearchBar = false;
-      this.isCheckBoxes = true;
-    },
-
-    isSelectedFileTypes(fileType) {
-      return this.selectedFileTypes.includes(fileType);
+      this.searchBarValue = '';
+      this.filterType = 'checkboxes';
+      this.updateFileTypeHash();
     },
 
     getFileLink(file, path) {
       const repo = window.REPOS[this.info.repo];
 
-      return `http://github.com/${
+      return `${window.BASE_URL}/${
         repo.location.organization}/${repo.location.repoName}/${path}/${repo.branch}/${file.path}`;
     },
 
@@ -300,12 +353,39 @@ window.vAuthorship = {
   },
 
   computed: {
-    selectedFiles() {
-      return this.files.filter((file) => this.isSelectedFileTypes(file.fileType)
-          && minimatch(file.path, this.filterSearch, { matchBase: true }))
-          .sort(this.sortingFunction);
+    sortingFunction() {
+      return (a, b) => (this.toReverseSortFiles ? -1 : 1)
+        * window.comparator(filesSortDict[this.filesSortType])(a, b);
     },
-    getFileTypeExistingLinesObj() {
+
+    isSelectAllChecked: {
+      get() {
+        return this.selectedFileTypes.length === this.fileTypes.length;
+      },
+      set(value) {
+        if (value) {
+          this.selectedFileTypes = this.fileTypes.slice();
+        } else {
+          this.selectedFileTypes = [];
+        }
+
+        this.indicateCheckBoxes();
+      },
+    },
+
+    activeFilesCount() {
+      return this.selectedFiles.filter((file) => file.active).length;
+    },
+
+    totalLineCount() {
+      return Object.values(this.fileTypeLinesObj).reduce((acc, val) => acc + val, 0);
+    },
+
+    totalBlankLineCount() {
+      return Object.values(this.fileTypeBlankLinesObj).reduce((acc, val) => acc + val, 0);
+    },
+
+    fileTypeLinesObj() {
       const numLinesModified = {};
       Object.entries(this.filesLinesObj)
           .filter(([, value]) => value > 0)
@@ -314,14 +394,20 @@ window.vAuthorship = {
           });
       return numLinesModified;
     },
+
+    ...Vuex.mapState(['fileTypeColors']),
   },
 
   created() {
     this.initiate();
-    this.setInfoHash();
   },
+
+  beforeDestroy() {
+    this.removeAuthorshipHashes();
+  },
+
   components: {
-    v_segment: window.vSegment,
+    vSegment: window.vSegment,
   },
 };
 
@@ -1530,7 +1616,7 @@ function regExpEscape (s) {
 }
 
 },{"brace-expansion":3,"path":6}],6:[function(require,module,exports){
-(function (process){
+(function (process){(function (){
 // .dirname, .basename, and .extname methods are extracted from Node.js v8.11.1,
 // backported and transplited with Babel, with backwards-compat fixes
 
@@ -1834,7 +1920,7 @@ var substr = 'ab'.substr(-1) === 'b'
     }
 ;
 
-}).call(this,require('_process'))
+}).call(this)}).call(this,require('_process'))
 },{"_process":7}],7:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
