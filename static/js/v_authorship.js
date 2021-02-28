@@ -7,29 +7,26 @@ const filesSortDict = {
   fileType: (file) => file.fileType,
 };
 
-function initialState() {
-  return {
-    isLoaded: false,
-    files: [],
-    selectedFiles: [],
-    filterType: 'checkboxes',
-    selectedFileTypes: [],
-    fileTypes: [],
-    filesLinesObj: {},
-    fileTypeBlankLinesObj: {},
-    filesSortType: 'lineOfCode',
-    toReverseSortFiles: true,
-    searchBarValue: '',
-  };
-}
-
 const repoCache = [];
 const minimatch = require('minimatch');
 
 window.vAuthorship = {
+  props: ['info'],
   template: window.$('v_authorship').innerHTML,
   data() {
-    return initialState();
+    return {
+      isLoaded: false,
+      files: [],
+      selectedFiles: [],
+      filterType: 'checkboxes',
+      selectedFileTypes: [],
+      fileTypes: [],
+      filesLinesObj: {},
+      fileTypeBlankLinesObj: {},
+      filesSortType: 'lineOfCode',
+      toReverseSortFiles: true,
+      searchBarValue: '',
+    };
   },
 
   watch: {
@@ -53,9 +50,11 @@ window.vAuthorship = {
       this.updateSelectedFiles();
     },
 
-    authorshipOwnerWatchable() {
-      Object.assign(this.$data, initialState());
-      this.initiate();
+    isLoaded() {
+      if (this.isLoaded) {
+        this.retrieveHashes();
+        this.setInfoHash();
+      }
     },
   },
 
@@ -75,24 +74,19 @@ window.vAuthorship = {
 
       this.toReverseSortFiles = hash.reverseAuthorshipOrder !== 'false';
 
+      this.selectedFileTypes = this.info.checkedFileTypes
+        ? this.info.checkedFileTypes.filter((fileType) => this.fileTypes.includes(fileType))
+        : [];
       if (hash.authorshipFileTypes) {
         this.selectedFileTypes = hash.authorshipFileTypes
             .split(window.HASH_DELIMITER)
             .filter((fileType) => this.fileTypes.includes(fileType));
-      } else {
-        this.resetSelectedFileTypes();
       }
 
       if ('authorshipFilesGlob' in hash) {
         this.indicateSearchBar();
         this.searchBarValue = hash.authorshipFilesGlob;
       }
-    },
-
-    resetSelectedFileTypes() {
-      this.selectedFileTypes = this.info.checkedFileTypes
-        ? this.info.checkedFileTypes.filter((fileType) => this.fileTypes.includes(fileType))
-        : [];
     },
 
     setInfoHash() {
@@ -115,7 +109,7 @@ window.vAuthorship = {
       window.encodeHash();
     },
 
-    async initiate() {
+    initiate() {
       const repo = window.REPOS[this.info.repo];
 
       this.getRepoProps(repo);
@@ -131,19 +125,12 @@ window.vAuthorship = {
       }
       repoCache.push(this.info.repo);
 
-      let { files } = repo;
-      if (!files) {
-        files = await window.api.loadAuthorship(this.info.repo);
-      }
-      this.processFiles(files);
-
-      if (this.info.isRefresh) {
-        this.retrieveHashes();
+      if (repo.files) {
+        this.processFiles(repo.files);
       } else {
-        this.resetSelectedFileTypes();
+        window.api.loadAuthorship(this.info.repo)
+            .then((files) => this.processFiles(files));
       }
-
-      this.setInfoHash();
     },
 
     getRepoProps(repo) {
@@ -287,7 +274,8 @@ window.vAuthorship = {
 
       this.fileTypeBlankLinesObj = fileTypeBlanksInfoObj;
       this.files = res;
-      this.updateSelectedFiles(true);
+      this.isLoaded = true;
+      this.updateSelectedFiles();
     },
 
     getContributionFromAllAuthors(contributionMap) {
@@ -322,7 +310,7 @@ window.vAuthorship = {
       window.encodeHash();
     },
 
-    updateSelectedFiles(setIsLoaded = false) {
+    updateSelectedFiles() {
       this.$store.commit('incrementLoadingOverlayCount', 1);
       setTimeout(() => {
         this.selectedFiles = this.files.filter(
@@ -330,9 +318,6 @@ window.vAuthorship = {
             && minimatch(file.path, this.searchBarValue || '*', { matchBase: true, dot: true }),
         )
             .sort(this.sortingFunction);
-        if (setIsLoaded) {
-          this.isLoaded = true;
-        }
         this.$store.commit('incrementLoadingOverlayCount', -1);
       });
     },
@@ -368,10 +353,6 @@ window.vAuthorship = {
   },
 
   computed: {
-    authorshipOwnerWatchable() {
-      return `${this.info.author}|${this.info.repo}|${this.info.isMergeGroup}`;
-    },
-
     sortingFunction() {
       return (a, b) => (this.toReverseSortFiles ? -1 : 1)
         * window.comparator(filesSortDict[this.filesSortType])(a, b);
@@ -414,10 +395,7 @@ window.vAuthorship = {
       return numLinesModified;
     },
 
-    ...Vuex.mapState({
-      fileTypeColors: 'fileTypeColors',
-      info: 'tabAuthorshipInfo',
-    }),
+    ...Vuex.mapState(['fileTypeColors']),
   },
 
   created() {
