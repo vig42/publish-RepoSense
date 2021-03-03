@@ -1,28 +1,21 @@
 /* global Vuex */
 
-function initialState() {
-  return {
-    showAllCommitMessageBody: true,
-    expandedCommitMessagesCount: this.totalCommitMessageBodyCount,
-    commitsSortType: 'time',
-    toReverseSortedCommits: true,
-    isCommitsFinalized: false,
-    selectedFileTypes: [],
-    fileTypes: [],
-  };
-}
-
 window.vZoom = {
+  props: ['info'],
   template: window.$('v_zoom').innerHTML,
   data() {
-    return initialState();
+    return {
+      showAllCommitMessageBody: true,
+      expandedCommitMessagesCount: this.totalCommitMessageBodyCount,
+      commitsSortType: 'time',
+      toReverseSortedCommits: true,
+      isCommitsFinalized: false,
+      selectedFileTypes: [],
+      fileTypes: [],
+    };
   },
 
   computed: {
-    zoomOwnerWatchable() {
-      return `${this.info.zRepo}|${this.info.zAuthor}|${this.info.zFilterGroup}|${this.info.zTimeFrame}`;
-    },
-
     sortingFunction() {
       const commitSortFunction = this.commitsSortType === 'time'
         ? (commit) => commit.date
@@ -41,6 +34,7 @@ window.vZoom = {
       filteredUser.commits = zUser.commits.filter(
           (commit) => commit[date] >= zSince && commit[date] <= zUntil,
       ).sort(this.sortingFunction);
+      this.isCommitsFinalized = true;
 
       return filteredUser;
     },
@@ -87,20 +81,17 @@ window.vZoom = {
         this.updateSelectedFileTypesHash();
       },
     },
-
-    ...Vuex.mapState({
-      fileTypeColors: 'fileTypeColors',
-      info: 'tabZoomInfo',
-    }),
+    ...Vuex.mapState(['fileTypeColors']),
   },
 
   watch: {
-    zoomOwnerWatchable() {
-      Object.assign(this.$data, initialState());
-      this.initiate();
-      this.setInfoHash();
+    isCommitsFinalized() {
+      if (this.isCommitsFinalized) {
+        this.updateFileTypes();
+        this.selectedFileTypes = this.fileTypes.slice();
+        this.retrieveHashes();
+      }
     },
-
     selectedFileTypes() {
       this.$nextTick(() => {
         this.updateExpandedCommitMessagesCount();
@@ -121,9 +112,6 @@ window.vZoom = {
       if (!this.info.zUser) { // restoring zoom tab from reloaded page
         this.restoreZoomTab();
       }
-
-      this.updateFileTypes();
-      this.selectedFileTypes = this.fileTypes.slice();
     },
 
     openSummary() {
@@ -258,7 +246,8 @@ window.vZoom = {
   },
   created() {
     this.initiate();
-    this.retrieveHashes();
+  },
+  mounted() {
     this.setInfoHash();
   },
   beforeDestroy() {
