@@ -28,18 +28,22 @@ window.app = new window.Vue({
     isLoadingOverlayEnabled: false,
     loadingOverlayOpacity: 1,
 
+    isCollapsed: false,
     isTabActive: true, // to force tab wrapper to load
 
     tabType: 'empty',
+    tabInfo: {},
     creationDate: '',
 
     errorMessages: {},
   },
   watch: {
     '$store.state.tabZoomInfo': function () {
+      this.tabInfo.tabZoom = Object.assign({}, this.$store.state.tabZoomInfo);
       this.activateTab('zoom');
     },
     '$store.state.tabAuthorshipInfo': function () {
+      this.tabInfo.tabAuthorship = Object.assign({}, this.$store.state.tabAuthorshipInfo);
       this.activateTab('authorship');
     },
     '$store.state.loadingOverlayCount': function () {
@@ -103,11 +107,14 @@ window.app = new window.Vue({
 
     // handle opening of sidebar //
     activateTab(tabName) {
+      // changing isTabActive to trigger redrawing of component
+      this.isTabActive = false;
       if (this.$refs.tabWrapper) {
         this.$refs.tabWrapper.scrollTop = 0;
       }
 
       this.isTabActive = true;
+      this.isCollapsed = false;
       this.tabType = tabName;
 
       window.addHash('tabOpen', this.isTabActive);
@@ -128,7 +135,6 @@ window.app = new window.Vue({
         author: hash.tabAuthor,
         repo: hash.tabRepo,
         isMergeGroup: hash.authorshipIsMergeGroup === 'true',
-        isRefresh: true,
         minDate,
         maxDate,
       };
@@ -181,6 +187,11 @@ window.app = new window.Vue({
           this.renderZoomTabHash();
         }
       }
+    },
+
+    generateKey(dataObj, keysToUse) {
+      const picked = keysToUse.map((key) => dataObj[key]);
+      return JSON.stringify(picked);
     },
 
     getRepoSenseHomeLink() {
