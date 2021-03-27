@@ -1,0 +1,8 @@
+Repository's Location,Branch,File formats,Ignore Glob List,Ignore standalone config,Ignore Commits List,Ignore Authors List,Shallow Cloning
+https://github.com/reposense/RepoSense.git,,txt,,,,,Yes
+https://github.com/servo/servo,,txt,,,,,Yes
+https://github.com/SeleniumHQ/selenium,,txt,,,,,Yes
+https://github.com/ApolloAuto/apollo,,txt,,,,,Yes
+https://github.com/ryanoasis/nerd-fonts,,txt,,,,,Yes
+https://github.com/raspberrypi/firmware,,txt,,,,,Yes
+https://github.com/chromium/chromium,,txt,,,,,Yes

@@ -13,11 +13,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description='Downloads a specific version of RepoSense.jar from our repository.')
     
     group = parser.add_mutually_exclusive_group()
-    group.add_argument('-r', '--release', action='store_true', help='Get RepoSense.jar from the latest release (Stable)')
-    group.add_argument('-m', '--master', action='store_true', help='Get RepoSense.jar from the latest master (Beta)')
-    group.add_argument('-t', '--tag', help='Get RepoSense.jar of a specific release version tag')
-
-    parser.add_argument('-o', '--overwrite', action='store_true', help='Overwrite RepoSense.jar file, if exists. Default: false')
+    group.add_argument('-b', '--branch', help='Get RepoSense.jar of a specific release version tag')
 
     return parser.parse_args()
 
@@ -42,26 +38,26 @@ def get_reposense_jar(url, tag=None):
     url = response.json()['assets'][0]['browser_download_url']
     download_file(url)
 
-def clone_and_make_reposense(tag=None):
+def clone_and_make_reposense(branch=None):
     
     # Cleanup cached RepoSense folder
     shutil.rmtree('RepoSense', ignore_errors=True)
 
     command = \
     '''
-    git clone 'https://github.com/reposense/RepoSense.git' &&
+    git clone 'https://github.com/vig42/RepoSense.git' &&
     cd RepoSense &&
     '''
 
-    if tag:
-        command += 'git checkout tags/{} -b deploy &&'.format(tag)
+    if branch:
+        command += 'git checkout ' + branch + ' &&'
 
     command += \
     '''
     ./gradlew zipreport shadowjar &&
     mv build/jar/RepoSense.jar ../
     '''
-   
+    
     subprocess.check_call(command, shell=True)
 
 def download_file(url):
@@ -70,18 +66,7 @@ def download_file(url):
 
 if __name__ == "__main__":
     args = parse_args()
-    
-    if os.path.exists(JAR_FILENAME) and args.overwrite is False:
-        print(JAR_FILENAME + ' already exists. Quitting.')
-        exit()
 
-    if args.tag:
-        handle_specific_release(args.tag)
-        exit()
-    
-    if args.master:
-        clone_and_make_reposense()
-        exit()
+    clone_and_make_reposense(args.branch)
+    exit()
 
-    # If no arguments are provided or --release
-    handle_latest_release()
