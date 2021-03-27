@@ -14,4 +14,4 @@
 ## Examples of other valid options; For more, please view the user guide
 ### java -jar RepoSense.jar --repos https://github.com/reposense/RepoSense.git
 
-java -jar RepoSense.jar --config ./configs-shallow-cloning  --since 27/09/2020 --until 27/03/2021
+java -jar RepoSense.jar --config ./configs-shallow-cloning --since 27/09/2020 --until 27/03/2021
