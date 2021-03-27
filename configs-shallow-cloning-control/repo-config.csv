@@ -1,7 +1,7 @@
 Repository's Location,Branch,File formats,Ignore Glob List,Ignore standalone config,Ignore Commits List,Ignore Authors List,Shallow Cloning
-https://github.com/reposense/RepoSense.git,,txt,,,,,
-https://github.com/servo/servo.git,,txt,,,,,
-https://github.com/SeleniumHQ/selenium.git,,txt,,,,,
-https://github.com/ApolloAuto/apollo.git,,txt,,,,,
-https://github.com/ryanoasis/nerd-fonts.git,,txt,,,,,
-https://github.com/raspberrypi/firmware.git,,txt,,,,,
+https://github.com/reposense/RepoSense.git,,,,,,,
+https://github.com/servo/servo.git,,,,,,,
+https://github.com/SeleniumHQ/selenium.git,,,,,,,
+https://github.com/ApolloAuto/apollo.git,,,,,,,
+https://github.com/ryanoasis/nerd-fonts.git,,,,,,,
+https://github.com/raspberrypi/firmware.git,,,,,,,
