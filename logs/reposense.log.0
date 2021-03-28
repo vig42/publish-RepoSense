@@ -1,155 +1,155 @@
-Mar 27, 2021 1:52:18 PM reposense.RepoSense getRepoConfigurations
+Mar 28, 2021 2:34:47 AM reposense.RepoSense getRepoConfigurations
 WARNING: No valid configurations in the author-config.csv.
 reposense.parser.InvalidCsvException: No valid configurations in the author-config.csv.
 	at reposense.parser.CsvParser.parse(CsvParser.java:95)
 	at reposense.RepoSense.getRepoConfigurations(RepoSense.java:116)
 	at reposense.RepoSense.main(RepoSense.java:64)
 
-Mar 27, 2021 1:52:18 PM reposense.report.RepoCloner spawnShallowPartialCloneProcess
+Mar 28, 2021 2:34:47 AM reposense.report.RepoCloner spawnShallowPartialCloneProcess
 INFO: Shallow partial cloning from https://github.com/ryanoasis/nerd-fonts.git...
-Mar 27, 2021 1:52:19 PM reposense.report.RepoCloner spawnPartialCloneProcess
+Mar 28, 2021 2:34:48 AM reposense.report.RepoCloner spawnPartialCloneProcess
 INFO: Partial cloning from https://github.com/ryanoasis/nerd-fonts.git...
-Mar 27, 2021 1:52:22 PM reposense.report.RepoCloner spawnShallowCloneProcess
+Mar 28, 2021 2:34:51 AM reposense.report.RepoCloner spawnShallowCloneProcess
 INFO: Shallow cloning in parallel from https://github.com/ryanoasis/nerd-fonts.git...
-Mar 27, 2021 1:52:22 PM reposense.report.RepoCloner waitForCloneProcess
+Mar 28, 2021 2:34:51 AM reposense.report.RepoCloner waitForCloneProcess
 INFO: Waiting for cloning of https://github.com/ryanoasis/nerd-fonts.git to complete...
-Mar 27, 2021 1:54:24 PM reposense.report.RepoCloner waitForCloneProcess
+Mar 28, 2021 2:37:04 AM reposense.report.RepoCloner waitForCloneProcess
 INFO: Cloning of https://github.com/ryanoasis/nerd-fonts.git completed!
-Mar 27, 2021 1:54:24 PM reposense.report.RepoCloner spawnShallowPartialCloneProcess
+Mar 28, 2021 2:37:04 AM reposense.report.RepoCloner spawnShallowPartialCloneProcess
 INFO: Shallow partial cloning from https://github.com/SeleniumHQ/selenium.git...
-Mar 27, 2021 1:54:25 PM reposense.report.RepoCloner spawnPartialCloneProcess
+Mar 28, 2021 2:37:05 AM reposense.report.RepoCloner spawnPartialCloneProcess
 INFO: Partial cloning from https://github.com/SeleniumHQ/selenium.git...
-Mar 27, 2021 1:54:30 PM reposense.report.RepoCloner spawnShallowCloneProcess
+Mar 28, 2021 2:37:09 AM reposense.report.RepoCloner spawnShallowCloneProcess
 INFO: Shallow cloning in parallel from https://github.com/SeleniumHQ/selenium.git...
-Mar 27, 2021 1:54:30 PM reposense.report.ReportGenerator analyzeRepos
+Mar 28, 2021 2:37:09 AM reposense.report.ReportGenerator analyzeRepos
 INFO: [1/6] Analyzing https://github.com/ryanoasis/nerd-fonts.git (master)...
-Mar 27, 2021 1:56:27 PM reposense.report.ReportGenerator updateRepoConfig
+Mar 28, 2021 2:39:07 AM reposense.report.ReportGenerator updateRepoConfig
 INFO: https://github.com/ryanoasis/nerd-fonts.git (master) does not contain a standalone config file.
-Mar 27, 2021 1:56:27 PM reposense.report.ReportGenerator updateAuthorList
+Mar 28, 2021 2:39:07 AM reposense.report.ReportGenerator updateAuthorList
 INFO: https://github.com/ryanoasis/nerd-fonts.git (master) has no authors specified, using all authors by default.
-Mar 27, 2021 1:56:27 PM reposense.commits.CommitInfoExtractor extractCommitInfos
+Mar 28, 2021 2:39:07 AM reposense.commits.CommitInfoExtractor extractCommitInfos
 INFO: Extracting commits info for https://github.com/ryanoasis/nerd-fonts.git (master)...
-Mar 27, 2021 1:56:27 PM reposense.commits.CommitInfoAnalyzer analyzeCommits
+Mar 28, 2021 2:39:28 AM reposense.commits.CommitInfoAnalyzer analyzeCommits
 INFO: Analyzing commits info for https://github.com/ryanoasis/nerd-fonts.git (master)...
-Mar 27, 2021 1:56:27 PM reposense.authorship.FileInfoExtractor extractTextFileInfos
+Mar 28, 2021 2:39:28 AM reposense.authorship.FileInfoExtractor extractTextFileInfos
 INFO: Extracting relevant file info from https://github.com/ryanoasis/nerd-fonts.git (master)...
-Mar 27, 2021 1:57:02 PM reposense.report.ReportGenerator analyzeRepo
+Mar 28, 2021 2:40:24 AM reposense.report.ReportGenerator analyzeRepo
 INFO: Analysis of https://github.com/ryanoasis/nerd-fonts.git (master) completed!
-Mar 27, 2021 1:57:02 PM reposense.report.RepoCloner waitForCloneProcess
+Mar 28, 2021 2:40:24 AM reposense.report.RepoCloner waitForCloneProcess
 INFO: Waiting for cloning of https://github.com/SeleniumHQ/selenium.git to complete...
-Mar 27, 2021 1:57:02 PM reposense.report.RepoCloner waitForCloneProcess
+Mar 28, 2021 2:40:24 AM reposense.report.RepoCloner waitForCloneProcess
 INFO: Cloning of https://github.com/SeleniumHQ/selenium.git completed!
-Mar 27, 2021 1:57:03 PM reposense.report.RepoCloner spawnShallowPartialCloneProcess
+Mar 28, 2021 2:40:24 AM reposense.report.RepoCloner spawnShallowPartialCloneProcess
 INFO: Shallow partial cloning from https://github.com/raspberrypi/firmware.git...
-Mar 27, 2021 1:57:04 PM reposense.report.RepoCloner spawnPartialCloneProcess
+Mar 28, 2021 2:40:26 AM reposense.report.RepoCloner spawnPartialCloneProcess
 INFO: Partial cloning from https://github.com/raspberrypi/firmware.git...
-Mar 27, 2021 1:57:19 PM reposense.report.RepoCloner spawnShallowCloneProcess
+Mar 28, 2021 2:40:38 AM reposense.report.RepoCloner spawnShallowCloneProcess
 INFO: Shallow cloning in parallel from https://github.com/raspberrypi/firmware.git...
-Mar 27, 2021 1:57:19 PM reposense.report.ReportGenerator analyzeRepos
+Mar 28, 2021 2:40:38 AM reposense.report.ReportGenerator analyzeRepos
 INFO: [2/6] Analyzing https://github.com/SeleniumHQ/selenium.git (trunk)...
-Mar 27, 2021 1:57:25 PM reposense.report.ReportGenerator updateRepoConfig
+Mar 28, 2021 2:40:44 AM reposense.report.ReportGenerator updateRepoConfig
 INFO: https://github.com/SeleniumHQ/selenium.git (trunk) does not contain a standalone config file.
-Mar 27, 2021 1:57:25 PM reposense.report.ReportGenerator updateAuthorList
+Mar 28, 2021 2:40:44 AM reposense.report.ReportGenerator updateAuthorList
 INFO: https://github.com/SeleniumHQ/selenium.git (trunk) has no authors specified, using all authors by default.
-Mar 27, 2021 1:57:25 PM reposense.model.AuthorConfiguration checkDuplicateAliases
+Mar 28, 2021 2:40:44 AM reposense.model.AuthorConfiguration checkDuplicateAliases
 WARNING: Duplicate alias Rajendra kadam found. The alias will belong to the last author - Rajendra kadam
-Mar 27, 2021 1:57:25 PM reposense.model.AuthorConfiguration checkDuplicateAliases
+Mar 28, 2021 2:40:44 AM reposense.model.AuthorConfiguration checkDuplicateAliases
 WARNING: Duplicate alias Rajendra kadam@users.noreply.github.com found. The alias will belong to the last author - Rajendra kadam
-Mar 27, 2021 1:57:25 PM reposense.commits.CommitInfoExtractor extractCommitInfos
+Mar 28, 2021 2:40:44 AM reposense.commits.CommitInfoExtractor extractCommitInfos
 INFO: Extracting commits info for https://github.com/SeleniumHQ/selenium.git (trunk)...
-Mar 27, 2021 1:57:29 PM reposense.commits.CommitInfoAnalyzer analyzeCommits
+Mar 28, 2021 2:40:48 AM reposense.commits.CommitInfoAnalyzer analyzeCommits
 INFO: Analyzing commits info for https://github.com/SeleniumHQ/selenium.git (trunk)...
-Mar 27, 2021 1:57:29 PM reposense.authorship.FileInfoExtractor extractTextFileInfos
+Mar 28, 2021 2:40:48 AM reposense.authorship.FileInfoExtractor extractTextFileInfos
 INFO: Extracting relevant file info from https://github.com/SeleniumHQ/selenium.git (trunk)...
-Mar 27, 2021 1:57:32 PM reposense.report.ReportGenerator analyzeRepo
+Mar 28, 2021 2:42:06 AM reposense.report.ReportGenerator analyzeRepo
 INFO: Analysis of https://github.com/SeleniumHQ/selenium.git (trunk) completed!
-Mar 27, 2021 1:57:32 PM reposense.report.RepoCloner waitForCloneProcess
+Mar 28, 2021 2:42:06 AM reposense.report.RepoCloner waitForCloneProcess
 INFO: Waiting for cloning of https://github.com/raspberrypi/firmware.git to complete...
-Mar 27, 2021 1:59:31 PM reposense.report.RepoCloner waitForCloneProcess
+Mar 28, 2021 2:43:09 AM reposense.report.RepoCloner waitForCloneProcess
 INFO: Cloning of https://github.com/raspberrypi/firmware.git completed!
-Mar 27, 2021 1:59:31 PM reposense.report.RepoCloner spawnShallowPartialCloneProcess
+Mar 28, 2021 2:43:09 AM reposense.report.RepoCloner spawnShallowPartialCloneProcess
 INFO: Shallow partial cloning from https://github.com/reposense/RepoSense.git...
-Mar 27, 2021 1:59:31 PM reposense.report.RepoCloner spawnPartialCloneProcess
+Mar 28, 2021 2:43:10 AM reposense.report.RepoCloner spawnPartialCloneProcess
 INFO: Partial cloning from https://github.com/reposense/RepoSense.git...
-Mar 27, 2021 1:59:32 PM reposense.report.RepoCloner spawnShallowCloneProcess
+Mar 28, 2021 2:43:11 AM reposense.report.RepoCloner spawnShallowCloneProcess
 INFO: Shallow cloning in parallel from https://github.com/reposense/RepoSense.git...
-Mar 27, 2021 1:59:32 PM reposense.report.ReportGenerator analyzeRepos
+Mar 28, 2021 2:43:11 AM reposense.report.ReportGenerator analyzeRepos
 INFO: [3/6] Analyzing https://github.com/raspberrypi/firmware.git (master)...
-Mar 27, 2021 2:01:10 PM reposense.report.ReportGenerator updateRepoConfig
+Mar 28, 2021 2:45:09 AM reposense.report.ReportGenerator updateRepoConfig
 INFO: https://github.com/raspberrypi/firmware.git (master) does not contain a standalone config file.
-Mar 27, 2021 2:01:10 PM reposense.report.ReportGenerator updateAuthorList
+Mar 28, 2021 2:45:09 AM reposense.report.ReportGenerator updateAuthorList
 INFO: https://github.com/raspberrypi/firmware.git (master) has no authors specified, using all authors by default.
-Mar 27, 2021 2:01:10 PM reposense.commits.CommitInfoExtractor extractCommitInfos
+Mar 28, 2021 2:45:09 AM reposense.commits.CommitInfoExtractor extractCommitInfos
 INFO: Extracting commits info for https://github.com/raspberrypi/firmware.git (master)...
-Mar 27, 2021 2:01:11 PM reposense.commits.CommitInfoAnalyzer analyzeCommits
+Mar 28, 2021 2:45:10 AM reposense.commits.CommitInfoAnalyzer analyzeCommits
 INFO: Analyzing commits info for https://github.com/raspberrypi/firmware.git (master)...
-Mar 27, 2021 2:01:11 PM reposense.authorship.FileInfoExtractor extractTextFileInfos
+Mar 28, 2021 2:45:10 AM reposense.authorship.FileInfoExtractor extractTextFileInfos
 INFO: Extracting relevant file info from https://github.com/raspberrypi/firmware.git (master)...
-Mar 27, 2021 2:01:18 PM reposense.report.ReportGenerator analyzeRepo
+Mar 28, 2021 2:45:18 AM reposense.report.ReportGenerator analyzeRepo
 INFO: Analysis of https://github.com/raspberrypi/firmware.git (master) completed!
-Mar 27, 2021 2:01:18 PM reposense.report.RepoCloner waitForCloneProcess
+Mar 28, 2021 2:45:18 AM reposense.report.RepoCloner waitForCloneProcess
 INFO: Waiting for cloning of https://github.com/reposense/RepoSense.git to complete...
-Mar 27, 2021 2:01:18 PM reposense.report.RepoCloner waitForCloneProcess
+Mar 28, 2021 2:45:18 AM reposense.report.RepoCloner waitForCloneProcess
 INFO: Cloning of https://github.com/reposense/RepoSense.git completed!
-Mar 27, 2021 2:01:19 PM reposense.report.RepoCloner spawnShallowPartialCloneProcess
+Mar 28, 2021 2:45:19 AM reposense.report.RepoCloner spawnShallowPartialCloneProcess
 INFO: Shallow partial cloning from https://github.com/servo/servo.git...
-Mar 27, 2021 2:01:20 PM reposense.report.RepoCloner spawnPartialCloneProcess
+Mar 28, 2021 2:45:21 AM reposense.report.RepoCloner spawnPartialCloneProcess
 INFO: Partial cloning from https://github.com/servo/servo.git...
-Mar 27, 2021 2:01:29 PM reposense.report.RepoCloner spawnShallowCloneProcess
+Mar 28, 2021 2:45:30 AM reposense.report.RepoCloner spawnShallowCloneProcess
 INFO: Shallow cloning in parallel from https://github.com/servo/servo.git...
-Mar 27, 2021 2:01:29 PM reposense.report.ReportGenerator analyzeRepos
+Mar 28, 2021 2:45:30 AM reposense.report.ReportGenerator analyzeRepos
 INFO: [4/6] Analyzing https://github.com/reposense/RepoSense.git (master)...
-Mar 27, 2021 2:01:30 PM reposense.commits.CommitInfoExtractor extractCommitInfos
+Mar 28, 2021 2:45:31 AM reposense.commits.CommitInfoExtractor extractCommitInfos
 INFO: Extracting commits info for https://github.com/reposense/RepoSense.git (master)...
-Mar 27, 2021 2:01:30 PM reposense.commits.CommitInfoAnalyzer analyzeCommits
+Mar 28, 2021 2:45:31 AM reposense.commits.CommitInfoAnalyzer analyzeCommits
 INFO: Analyzing commits info for https://github.com/reposense/RepoSense.git (master)...
-Mar 27, 2021 2:01:30 PM reposense.authorship.FileInfoExtractor extractTextFileInfos
+Mar 28, 2021 2:45:31 AM reposense.authorship.FileInfoExtractor extractTextFileInfos
 INFO: Extracting relevant file info from https://github.com/reposense/RepoSense.git (master)...
-Mar 27, 2021 2:01:33 PM reposense.report.ReportGenerator analyzeRepo
+Mar 28, 2021 2:45:34 AM reposense.report.ReportGenerator analyzeRepo
 INFO: Analysis of https://github.com/reposense/RepoSense.git (master) completed!
-Mar 27, 2021 2:01:33 PM reposense.report.RepoCloner waitForCloneProcess
+Mar 28, 2021 2:45:34 AM reposense.report.RepoCloner waitForCloneProcess
 INFO: Waiting for cloning of https://github.com/servo/servo.git to complete...
-Mar 27, 2021 2:01:48 PM reposense.report.RepoCloner waitForCloneProcess
+Mar 28, 2021 2:45:49 AM reposense.report.RepoCloner waitForCloneProcess
 INFO: Cloning of https://github.com/servo/servo.git completed!
-Mar 27, 2021 2:01:48 PM reposense.report.RepoCloner spawnShallowPartialCloneProcess
+Mar 28, 2021 2:45:49 AM reposense.report.RepoCloner spawnShallowPartialCloneProcess
 INFO: Shallow partial cloning from https://github.com/ApolloAuto/apollo.git...
-Mar 27, 2021 2:01:49 PM reposense.report.RepoCloner spawnPartialCloneProcess
+Mar 28, 2021 2:45:50 AM reposense.report.RepoCloner spawnPartialCloneProcess
 INFO: Partial cloning from https://github.com/ApolloAuto/apollo.git...
-Mar 27, 2021 2:01:51 PM reposense.report.RepoCloner spawnShallowCloneProcess
+Mar 28, 2021 2:45:52 AM reposense.report.RepoCloner spawnShallowCloneProcess
 INFO: Shallow cloning in parallel from https://github.com/ApolloAuto/apollo.git...
-Mar 27, 2021 2:01:51 PM reposense.report.ReportGenerator analyzeRepos
+Mar 28, 2021 2:45:52 AM reposense.report.ReportGenerator analyzeRepos
 INFO: [5/6] Analyzing https://github.com/servo/servo.git (master)...
-Mar 27, 2021 2:02:15 PM reposense.report.ReportGenerator updateRepoConfig
+Mar 28, 2021 2:46:19 AM reposense.report.ReportGenerator updateRepoConfig
 INFO: https://github.com/servo/servo.git (master) does not contain a standalone config file.
-Mar 27, 2021 2:02:15 PM reposense.report.ReportGenerator updateAuthorList
+Mar 28, 2021 2:46:19 AM reposense.report.ReportGenerator updateAuthorList
 INFO: https://github.com/servo/servo.git (master) has no authors specified, using all authors by default.
-Mar 27, 2021 2:02:15 PM reposense.commits.CommitInfoExtractor extractCommitInfos
+Mar 28, 2021 2:46:19 AM reposense.commits.CommitInfoExtractor extractCommitInfos
 INFO: Extracting commits info for https://github.com/servo/servo.git (master)...
-Mar 27, 2021 2:02:23 PM reposense.commits.CommitInfoAnalyzer analyzeCommits
+Mar 28, 2021 2:46:29 AM reposense.commits.CommitInfoAnalyzer analyzeCommits
 INFO: Analyzing commits info for https://github.com/servo/servo.git (master)...
-Mar 27, 2021 2:02:23 PM reposense.authorship.FileInfoExtractor extractTextFileInfos
+Mar 28, 2021 2:46:29 AM reposense.authorship.FileInfoExtractor extractTextFileInfos
 INFO: Extracting relevant file info from https://github.com/servo/servo.git (master)...
-Mar 27, 2021 2:02:35 PM reposense.report.ReportGenerator analyzeRepo
+Mar 28, 2021 2:47:20 AM reposense.report.ReportGenerator analyzeRepo
 INFO: Analysis of https://github.com/servo/servo.git (master) completed!
-Mar 27, 2021 2:02:35 PM reposense.report.RepoCloner waitForCloneProcess
+Mar 28, 2021 2:47:20 AM reposense.report.RepoCloner waitForCloneProcess
 INFO: Waiting for cloning of https://github.com/ApolloAuto/apollo.git to complete...
-Mar 27, 2021 2:02:59 PM reposense.report.RepoCloner waitForCloneProcess
+Mar 28, 2021 2:47:20 AM reposense.report.RepoCloner waitForCloneProcess
 INFO: Cloning of https://github.com/ApolloAuto/apollo.git completed!
-Mar 27, 2021 2:03:01 PM reposense.report.ReportGenerator analyzeRepos
+Mar 28, 2021 2:47:22 AM reposense.report.ReportGenerator analyzeRepos
 INFO: [6/6] Analyzing https://github.com/ApolloAuto/apollo.git (master)...
-Mar 27, 2021 2:03:49 PM reposense.report.ReportGenerator updateRepoConfig
+Mar 28, 2021 2:48:15 AM reposense.report.ReportGenerator updateRepoConfig
 INFO: https://github.com/ApolloAuto/apollo.git (master) does not contain a standalone config file.
-Mar 27, 2021 2:03:49 PM reposense.report.ReportGenerator updateAuthorList
+Mar 28, 2021 2:48:16 AM reposense.report.ReportGenerator updateAuthorList
 INFO: https://github.com/ApolloAuto/apollo.git (master) has no authors specified, using all authors by default.
-Mar 27, 2021 2:03:50 PM reposense.commits.CommitInfoExtractor extractCommitInfos
+Mar 28, 2021 2:48:17 AM reposense.commits.CommitInfoExtractor extractCommitInfos
 INFO: Extracting commits info for https://github.com/ApolloAuto/apollo.git (master)...
-Mar 27, 2021 2:03:51 PM reposense.commits.CommitInfoAnalyzer analyzeCommits
+Mar 28, 2021 2:48:19 AM reposense.commits.CommitInfoAnalyzer analyzeCommits
 INFO: Analyzing commits info for https://github.com/ApolloAuto/apollo.git (master)...
-Mar 27, 2021 2:03:51 PM reposense.authorship.FileInfoExtractor extractTextFileInfos
+Mar 28, 2021 2:48:19 AM reposense.authorship.FileInfoExtractor extractTextFileInfos
 INFO: Extracting relevant file info from https://github.com/ApolloAuto/apollo.git (master)...
-Mar 27, 2021 2:04:12 PM reposense.report.ReportGenerator analyzeRepo
+Mar 28, 2021 2:49:27 AM reposense.report.ReportGenerator analyzeRepo
 INFO: Analysis of https://github.com/ApolloAuto/apollo.git (master) completed!
-Mar 27, 2021 2:04:13 PM reposense.report.ReportGenerator generateReposReport
+Mar 28, 2021 2:49:28 AM reposense.report.ReportGenerator generateReposReport
 INFO: The report is generated at /home/runner/work/publish-RepoSense/publish-RepoSense/reposense-report
-Mar 27, 2021 2:04:13 PM reposense.RepoSense main
-INFO: Elapsed processing time: 11 minute(s) 55.03 second(s)
+Mar 28, 2021 2:49:30 AM reposense.RepoSense main
+INFO: Elapsed processing time: 14 minute(s) 42.97 second(s)
